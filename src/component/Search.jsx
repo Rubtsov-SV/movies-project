@@ -99,6 +99,9 @@ class Search extends React.Component {
                         />
                         <span>Series only</span>
                     </label>
+                    <span className="right">
+                        Number of movies found: {this.props.totalResults}
+                    </span>
                 </div>
             </div>
         );

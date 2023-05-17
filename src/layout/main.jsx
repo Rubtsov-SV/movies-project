@@ -9,14 +9,16 @@ class Main extends React.Component {
     state = {
         movies: [],
         loading: true,
+        totalResults: 0,
     };
 
     componentDidMount() {
         fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&s=hulk`)
             .then((response) => response.json())
-            .then((data) =>
-                this.setState({ movies: data.Search, loading: false })
-            );
+            .then((data) => {
+                this.setState({ movies: data.Search, loading: false });
+                console.log(data);
+            });
     }
 
     searchMovies = (str, type = "all") => {
@@ -28,16 +30,23 @@ class Main extends React.Component {
         )
             .then((response) => response.json())
             .then((data) =>
-                this.setState({ movies: data.Search, loading: false })
+                this.setState({
+                    movies: data.Search,
+                    loading: false,
+                    totalResults: data.totalResults,
+                })
             );
     };
 
     render() {
-        const { movies, loading } = this.state;
+        const { movies, loading, totalResults } = this.state;
 
         return (
             <main className="container content">
-                <Search searchMovies={this.searchMovies} />
+                <Search
+                    searchMovies={this.searchMovies}
+                    totalResults={totalResults}
+                />
                 {loading ? <Preloader /> : <Movies movies={movies} />}
             </main>
         );
